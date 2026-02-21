@@ -1,8 +1,9 @@
 package lab1;
 
+import java.io.*;
 import java.util.Arrays;
 
-public class IntegerSet {
+public class IntegerSet implements Serializable {
 
     private int[] numbers = new int[0];
 
@@ -110,6 +111,43 @@ public class IntegerSet {
 
     public boolean retainAll(int... numbers) {
         return retainAll(new IntegerSet(numbers));
+    }
+
+    public void saveToBinary(String filename) throws IOException {
+        try (ObjectOutputStream output = new ObjectOutputStream(new FileOutputStream(filename))) {
+            output.writeObject(this);
+        }
+    }
+
+    public static IntegerSet loadFromBinary(String filename) throws IOException, ClassNotFoundException {
+        try (ObjectInputStream input = new ObjectInputStream(new FileInputStream(filename))) {
+            return (IntegerSet) input.readObject();
+        }
+    }
+
+    public void saveToText(String filename) throws IOException {
+        try (PrintWriter writer = new PrintWriter(new FileWriter(filename))) {
+            writer.print(this);
+        }
+    }
+
+    public static IntegerSet loadFromText(String filename) throws IOException {
+        String stringSet;
+        try (BufferedReader reader = new BufferedReader(new FileReader(filename))) {
+            stringSet = reader.readLine();
+            if (stringSet == null) throw new IOException();
+        }
+        IntegerSet integerSet = new IntegerSet();
+        String content = stringSet.replaceAll("[\\[\\]\\s]", "");
+        if (!content.isEmpty()) {
+            String[] numbers = content.split(",");
+            for (String part : numbers) {
+                try {
+                    integerSet.add(Integer.parseInt(part));
+                } catch (NumberFormatException ignored) {}
+            }
+        }
+        return integerSet;
     }
 
     @Override
