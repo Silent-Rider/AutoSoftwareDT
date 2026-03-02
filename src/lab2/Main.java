@@ -24,7 +24,7 @@ public class Main {
         list.printList();
 
         list.set(0, 7);
-        System.out.print("После установки нового значения элементу 0: ");
+        System.out.print("После установки нового значения элементу под индексом 0: ");
         list.printList();
 
         list.sort();
