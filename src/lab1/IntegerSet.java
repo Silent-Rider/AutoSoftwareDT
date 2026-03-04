@@ -137,6 +137,10 @@ public class IntegerSet implements Serializable {
             stringSet = reader.readLine();
             if (stringSet == null) throw new IOException();
         }
+        return parseValue(stringSet);
+    }
+
+    public static IntegerSet parseValue(String stringSet) {
         IntegerSet integerSet = new IntegerSet();
         String content = stringSet.replaceAll("[\\[\\]\\s]", "");
         if (!content.isEmpty()) {

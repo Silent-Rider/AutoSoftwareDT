@@ -1,19 +1,32 @@
 package lab2;
 
-public class IntegerLinkedList {
+import lab3.Comparator;
+import lab3.UserType;
 
-    private Node first;
-    private Node last;
+public class UniversalLinkedList<T> {
+
+    private final UserType<T> userType;
+    private Node<T> first;
+    private Node<T> last;
     private int size;
 
-    public IntegerLinkedList() {
+    public UniversalLinkedList(UserType<T> userType) {
+        this.userType = userType;
         this.first = null;
         this.last = null;
         this.size = 0;
     }
 
-    public void addFirst(int value) {
-        Node newNode = new Node(value);
+    @SafeVarargs
+    public UniversalLinkedList(UserType<T> userType, T ... values) {
+        this(userType);
+        for (T value: values) {
+            addLast(value);
+        }
+    }
+
+    public void addFirst(T value) {
+        Node<T> newNode = new Node<>(value);
         if (first == null) {
             first = newNode;
             last = newNode;
@@ -25,28 +38,27 @@ public class IntegerLinkedList {
         size++;
     }
 
-    public void addLast(int value) {
-        Node newNode = new Node(value);
+    public void addLast(T value) {
+        Node<T> newNode = new Node<>(value);
         if (last == null) {
             first = newNode;
-            last = newNode;
         } else {
             last.setNext(newNode);
             newNode.setPrevious(last);
-            last = newNode;
         }
+        last = newNode;
         size++;
     }
 
-    public int get(int index) {
+    public T get(int index) {
         if (index < 0 || index >= size) {
             throw new IndexOutOfBoundsException("Index: " + index + ", Size: " + size);
         }
-        Node current = getNodeByIndex(index);
+        Node<T> current = getNodeByIndex(index);
         return current.getValue();
     }
 
-    public void add(int index, int value) {
+    public void add(int index, T value) {
         if (index < 0 || index > size) {
             throw new IndexOutOfBoundsException("Index: " + index + ", Size: " + size);
         }
@@ -59,9 +71,9 @@ public class IntegerLinkedList {
             return;
         }
 
-        Node nextNode = getNodeByIndex(index);
-        Node prevNode = nextNode.getPrevious();
-        Node newNode = new Node(value);
+        Node<T> nextNode = getNodeByIndex(index);
+        Node<T> prevNode = nextNode.getPrevious();
+        Node<T> newNode = new Node<>(value);
 
         prevNode.setNext(newNode);
         newNode.setPrevious(prevNode);
@@ -71,24 +83,24 @@ public class IntegerLinkedList {
         size++;
     }
 
-    public int set(int index, int value) {
+    public T set(int index, T value) {
         if (index < 0 || index >= size) {
             throw new IndexOutOfBoundsException("Index: " + index + ", Size: " + size);
         }
-        Node nodeToSet = getNodeByIndex(index);
-        int oldValue = nodeToSet.getValue();
+        Node<T> nodeToSet = getNodeByIndex(index);
+        T oldValue = nodeToSet.getValue();
 
         nodeToSet.setValue(value);
         return oldValue;
     }
 
-    public int remove(int index) {
+    public T remove(int index) {
         if (index < 0 || index >= size) {
             throw new IndexOutOfBoundsException("Index: " + index + ", Size: " + size);
         }
 
-        Node nodeToRemove = getNodeByIndex(index);
-        int removedValue = nodeToRemove.getValue();
+        Node<T> nodeToRemove = getNodeByIndex(index);
+        T removedValue = nodeToRemove.getValue();
 
         if (nodeToRemove == first && nodeToRemove == last) {
             first = null;
@@ -100,8 +112,8 @@ public class IntegerLinkedList {
             last = nodeToRemove.getPrevious();
             last.setNext(null);
         } else {
-            Node prev = nodeToRemove.getPrevious();
-            Node next = nodeToRemove.getNext();
+            Node<T> prev = nodeToRemove.getPrevious();
+            Node<T> next = nodeToRemove.getNext();
             prev.setNext(next);
             next.setPrevious(prev);
         }
@@ -110,8 +122,8 @@ public class IntegerLinkedList {
         return removedValue;
     }
 
-    private Node getNodeByIndex(int index) {
-        Node current;
+    private Node<T> getNodeByIndex(int index) {
+        Node<T> current;
         if (index < size / 2) {
             current = first;
             for (int i = 0; i < index; i++) {
@@ -139,24 +151,24 @@ public class IntegerLinkedList {
         }
     }
 
-    private Node mergeSort(Node head) {
+    private Node<T> mergeSort(Node<T> head) {
         if (head == null || head.getNext() == null) {
             return head;
         }
 
-        Node middle = getMiddle(head);
-        Node nextOfMiddle = middle.getNext();
+        Node<T> middle = getMiddle(head);
+        Node<T> nextOfMiddle = middle.getNext();
         middle.setNext(null);
 
-        Node left = mergeSort(head);
-        Node right = mergeSort(nextOfMiddle);
+        Node<T> left = mergeSort(head);
+        Node<T> right = mergeSort(nextOfMiddle);
 
         return sortAndMergeLists(left, right);
     }
 
-    private Node getMiddle(Node head) {
-        Node slow = head;
-        Node fast = head;
+    private Node<T> getMiddle(Node<T> head) {
+        Node<T> slow = head;
+        Node<T> fast = head;
 
         while (fast.getNext() != null && fast.getNext().getNext() != null) {
             slow = slow.getNext();
@@ -165,12 +177,14 @@ public class IntegerLinkedList {
         return slow;
     }
 
-    private Node sortAndMergeLists(Node a, Node b) {
+    private Node<T> sortAndMergeLists(Node<T> a, Node<T> b) {
         if (a == null) return b;
         if (b == null) return a;
 
-        Node result;
-        if (a.getValue() <= b.getValue()) {
+        Node<T> result;
+        Comparator comparator = userType.getTypeComparator();
+        int diff = comparator.compare(a.getValue(), b.getValue());
+        if (diff <= 0) {
             result = a;
             result.setNext(sortAndMergeLists(a.getNext(), b));
         } else {
@@ -182,9 +196,9 @@ public class IntegerLinkedList {
         return result;
     }
 
-    public void forEach(IntConsumer action) {
+    public void forEach(Consumer<T> action) {
         if (action == null) throw new NullPointerException();
-        Node current = first;
+        Node<T> current = first;
         while (current != null) {
             action.toDo(current.getValue());
             current = current.getNext();
@@ -197,27 +211,27 @@ public class IntegerLinkedList {
     }
 
     @FunctionalInterface
-    public interface IntConsumer {
-        void toDo(int v);
+    public interface Consumer<T> {
+        void toDo(T value);
     }
 
-    public static class Node {
+    public static class Node<T> {
 
-        private Node previous;
-        private Node next;
-        private int value;
+        private Node<T> previous;
+        private Node<T> next;
+        private T value;
 
-        public Node(int value) {
+        public Node(T value) {
             this.value = value;
             this.previous = null;
             this.next = null;
         }
 
-        public int getValue() { return value; }
-        public void setValue(int value) { this.value = value; }
-        public Node getPrevious() { return previous; }
-        public void setPrevious(Node previous) { this.previous = previous; }
-        public Node getNext() { return next; }
-        public void setNext(Node next) { this.next = next; }
+        public T getValue() { return value; }
+        public void setValue(T value) { this.value = value; }
+        public Node<T> getPrevious() { return previous; }
+        public void setPrevious(Node<T> previous) { this.previous = previous; }
+        public Node<T> getNext() { return next; }
+        public void setNext(Node<T> next) { this.next = next; }
     }
 }

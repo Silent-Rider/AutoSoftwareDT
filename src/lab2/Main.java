@@ -1,9 +1,11 @@
 package lab2;
 
+import lab3.IntegerType;
+
 public class Main {
 
     public static void main(String[] args) {
-        IntegerLinkedList list = new IntegerLinkedList();
+        UniversalLinkedList<Integer> list = new UniversalLinkedList<>(new IntegerType());
 
         list.addLast(2);
         list.addLast(8);
