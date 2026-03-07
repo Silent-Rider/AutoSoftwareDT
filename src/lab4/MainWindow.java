@@ -150,6 +150,5 @@ public class MainWindow extends JFrame {
         dataList.forEach(value -> {
             outputArea.append(value.toString() + "\n");
         });
-        statusLabel.setText("Элементов в списке: " + dataList.size());
     }
 }
