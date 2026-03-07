@@ -19,6 +19,7 @@ public class MainWindow extends JFrame {
     private JButton addButton;
     private JButton sortButton;
     private JButton clearButton;
+    private JButton aboutButton;
     private JTextArea outputArea;
     private JLabel statusLabel;
 
@@ -44,6 +45,7 @@ public class MainWindow extends JFrame {
         addButton = new JButton("Добавить");
         sortButton = new JButton("Сортировать");
         clearButton = new JButton("Очистить");
+        aboutButton = new JButton("О программе");
 
         outputArea = new JTextArea();
         outputArea.setEditable(false);
@@ -64,9 +66,14 @@ public class MainWindow extends JFrame {
         topPanel.add(inputField);
         topPanel.add(addButton);
 
-        JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
-        buttonPanel.add(sortButton);
-        buttonPanel.add(clearButton);
+        JPanel sortAndClearPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
+        sortAndClearPanel.add(sortButton);
+        sortAndClearPanel.add(clearButton);
+        JPanel aboutPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
+        aboutPanel.add(aboutButton);
+        JPanel buttonPanel = new JPanel(new BorderLayout());
+        buttonPanel.add(sortAndClearPanel, BorderLayout.WEST);
+        buttonPanel.add(aboutPanel, BorderLayout.EAST);
 
         JPanel centerPanel = new JPanel(new BorderLayout());
         centerPanel.add(new JScrollPane(outputArea), BorderLayout.CENTER);
@@ -83,6 +90,10 @@ public class MainWindow extends JFrame {
         addButton.addActionListener(e -> tryAddElement());
         inputField.addActionListener(e -> tryAddElement());
         sortButton.addActionListener(e -> performSort());
+
+        String aboutText = "Программа была разработана\nстудентами группы АПИМ-25\nКлименко Кириллом и Бадаговым Андреем";
+        aboutButton.addActionListener(e ->
+                JOptionPane.showMessageDialog(null, aboutText, "О программе",JOptionPane.INFORMATION_MESSAGE));
 
         clearButton.addActionListener(e -> {
             dataList = new UniversalLinkedList(currentPrototype);
