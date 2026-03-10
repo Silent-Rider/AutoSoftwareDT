@@ -34,6 +34,9 @@ public class IntegerType implements UserType<Integer> {
 
     @Override
     public Integer parseValue(String integerString) {
+        if (integerString == null || integerString.trim().isEmpty()) {
+            return 0;
+        }
         return Integer.parseInt(integerString.trim());
     }
 

@@ -58,6 +58,22 @@ public class UniversalLinkedList<T> {
         return current.getValue();
     }
 
+    private Node<T> getNodeByIndex(int index) {
+        Node<T> current;
+        if (index < size / 2) {
+            current = first;
+            for (int i = 0; i < index; i++) {
+                current = current.getNext();
+            }
+        } else {
+            current = last;
+            for (int i = size - 1; i > index; i--) {
+                current = current.getPrevious();
+            }
+        }
+        return current;
+    }
+
     public void add(int index, T value) {
         if (index < 0 || index > size) {
             throw new IndexOutOfBoundsException("Index: " + index + ", Size: " + size);
@@ -120,22 +136,6 @@ public class UniversalLinkedList<T> {
 
         size--;
         return removedValue;
-    }
-
-    private Node<T> getNodeByIndex(int index) {
-        Node<T> current;
-        if (index < size / 2) {
-            current = first;
-            for (int i = 0; i < index; i++) {
-                current = current.getNext();
-            }
-        } else {
-            current = last;
-            for (int i = size - 1; i > index; i--) {
-                current = current.getPrevious();
-            }
-        }
-        return current;
     }
 
     public int size() {
