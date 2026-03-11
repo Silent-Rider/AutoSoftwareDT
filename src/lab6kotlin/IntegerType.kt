@@ -17,7 +17,6 @@ class IntegerType: UserType<Int> {
         return o
     }
 
-    @Throws(IOException::class)
     override fun readValue(input: InputStreamReader): Int {
         BufferedReader(input).use { br ->
             val line = br.readLine()
