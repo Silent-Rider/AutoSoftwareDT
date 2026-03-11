@@ -7,6 +7,6 @@ interface UserType<T> {
     fun create(): T
     fun clone(o: T?): T?
     fun readValue(input: InputStreamReader): T
-    fun parseValue(string: String?): T?
+    fun parseValue(string: String?): T
     fun getTypeComparator(): Comparator<T>
 }

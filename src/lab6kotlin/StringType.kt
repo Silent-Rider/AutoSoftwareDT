@@ -1,7 +1,6 @@
 package lab6kotlin
 
 import java.io.BufferedReader
-import java.io.IOException
 import java.io.InputStreamReader
 
 class StringType: UserType<String> {
