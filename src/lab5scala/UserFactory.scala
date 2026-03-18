@@ -1,5 +1,7 @@
 package lab5scala
 
+import lab5scala.types.{DoubleType, IntegerType, StringType}
+
 import scala.collection.mutable
 
 class UserFactory {

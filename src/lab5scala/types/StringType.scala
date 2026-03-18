@@ -1,4 +1,6 @@
-package lab5scala
+package lab5scala.types
+
+import lab5scala.UserType
 
 import java.io.{BufferedReader, InputStreamReader}
 import java.util.Comparator
@@ -7,9 +9,7 @@ import scala.util.Using
 class StringType extends UserType[String] {
 
   override def typeName: String = classOf[String].getName
-
   override def create: String = ""
-
   override def clone(o: String): String = o
 
   override def readValue(in: InputStreamReader): String = {

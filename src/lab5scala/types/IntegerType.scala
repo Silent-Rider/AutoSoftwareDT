@@ -1,4 +1,6 @@
-package lab5scala
+package lab5scala.types
+
+import lab5scala.UserType
 
 import java.io.{BufferedReader, InputStreamReader}
 import java.util.Comparator
