@@ -18,9 +18,7 @@ class UniversalLinkedList<T> {
 
     constructor(userType: UserType<T>, vararg values: T) {
         this.userType = userType
-        for (value in values) {
-            addLast(value)
-        }
+        values.forEach(::addLast)
     }
 
     fun addFirst(value: T) {
