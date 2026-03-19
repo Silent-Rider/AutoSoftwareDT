@@ -49,7 +49,6 @@ public class UniversalLinkedListTest {
     @Test
     @DisplayName("[СТРУКТУРНОЕ] Условие: sortAndMergeLists (ветви сравнения diff <= 0 и diff > 0)")
     public void testStructuralMergeBranches() {
-        // Набор требует срабатывания обеих веток сравнения при слиянии
         UniversalLinkedList<Integer> list = new UniversalLinkedList<>(INTEGER_TYPE, 2, 1, 4, 3);
         list.sort();
         verifyOrder(list, new Integer[]{1, 2, 3, 4});
@@ -60,9 +59,8 @@ public class UniversalLinkedListTest {
     public void testStructuralLastPointerUpdatePath() {
         UniversalLinkedList<Integer> list = new UniversalLinkedList<>(INTEGER_TYPE, 3, 1, 2);
         list.sort();
-        // Проверка, что цикл обновления last отработал
         assertEquals(3, list.get(list.size() - 1));
-        list.addLast(4); // Если last битый, это вызовет ошибку
+        list.addLast(4);
         assertEquals(4, list.get(3));
     }
     
