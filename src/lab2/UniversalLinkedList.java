@@ -1,7 +1,7 @@
 package lab2;
 
-import lab3.Comparator;
 import lab3.UserType;
+import java.util.Comparator;
 
 public class UniversalLinkedList<T> {
 
@@ -182,7 +182,7 @@ public class UniversalLinkedList<T> {
         if (b == null) return a;
 
         Node<T> result;
-        Comparator comparator = userType.getTypeComparator();
+        Comparator<T> comparator = userType.getTypeComparator();
         int diff = comparator.compare(a.getValue(), b.getValue());
         if (diff <= 0) {
             result = a;

@@ -3,6 +3,7 @@ package lab3;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.Comparator;
 
 public class StringType implements UserType<String> {
 
@@ -35,12 +36,7 @@ public class StringType implements UserType<String> {
     }
 
     @Override
-    public Comparator getTypeComparator() {
-        return (o1, o2) -> {
-            if (!(o1 instanceof String s1) || !(o2 instanceof String s2)) {
-                throw new ClassCastException();
-            }
-            return s1.compareTo(s2);
-        };
+    public Comparator<String> getTypeComparator() {
+        return String::compareTo;
     }
 }

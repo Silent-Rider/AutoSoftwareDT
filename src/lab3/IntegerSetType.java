@@ -5,6 +5,7 @@ import lab1.IntegerSet;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.Comparator;
 
 public class IntegerSetType implements UserType<IntegerSet> {
 
@@ -40,12 +41,7 @@ public class IntegerSetType implements UserType<IntegerSet> {
     }
 
     @Override
-    public Comparator getTypeComparator() {
-        return (o1, o2) -> {
-            if (!(o1 instanceof IntegerSet first) || !(o2 instanceof IntegerSet second)) {
-                throw new ClassCastException();
-            }
-            return first.size() - second.size();
-        };
+    public Comparator<IntegerSet> getTypeComparator() {
+        return Comparator.comparingInt(IntegerSet::size);
     }
 }

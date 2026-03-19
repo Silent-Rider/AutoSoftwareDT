@@ -3,6 +3,7 @@ package lab3;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.Comparator;
 
 public class IntegerType implements UserType<Integer> {
 
@@ -41,12 +42,7 @@ public class IntegerType implements UserType<Integer> {
     }
 
     @Override
-    public Comparator getTypeComparator() {
-        return (o1, o2) -> {
-            if (!(o1 instanceof Integer i1) || !(o2 instanceof Integer i2)) {
-                throw new ClassCastException();
-            }
-            return i1.compareTo(i2);
-        };
+    public Comparator<Integer> getTypeComparator() {
+        return Integer::compareTo;
     }
 }
